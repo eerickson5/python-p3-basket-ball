@@ -182,3 +182,58 @@ def game_dict():
             ]
         }
     }
+
+def num_points_per_game(given_player):
+    for player in all_players():
+        if player["name"] == given_player:
+            return player["points_per_game"]
+
+def player_age(given_player):
+    for player in all_players():
+        if player["name"] == given_player:
+            return player["age"]
+
+def team_colors(given_team):
+    game = game_dict()
+    if game["home"]["team_name"] == given_team:
+        return game["home"]["colors"]
+    else:
+        return game["away"]["colors"]
+
+def team_names():
+    game = game_dict()
+    return [game["home"]["team_name"], game["away"]["team_name"]]
+def player_numbers(team):
+    game = game_dict()
+    players = game["home"]["players"] if game["home"]["team_name"] == team else game["away"]["players"]
+    return[ player["number"] for player in players]
+
+def player_stats(player_name):
+    for player in all_players():
+        if player["name"] == player_name:
+            return(player)
+
+def average_rebounds_by_shoe_brand():
+    brands = {}
+    brand_averages={}
+    for player in all_players():
+        if player["shoe_brand"] in brands:
+            brands[player["shoe_brand"]].append(player["rebounds_per_game"])
+        else:
+            brands[player["shoe_brand"]] = [player["rebounds_per_game"]]
+            brand_averages[player["shoe_brand"]] = 0
+    for brand, rebounds in brands.items():
+        print(f"{brand}:  {averager(rebounds)}")
+
+# Helpers
+def all_players():
+    players = game_dict()["home"]["players"] + game_dict()["away"]["players"]
+    return players
+
+def averager(array):
+    sum = 0
+    for num in array:
+        sum += num
+    return "{:.2f}".format(sum / len(array), 2)
+
+average_rebounds_by_shoe_brand()
